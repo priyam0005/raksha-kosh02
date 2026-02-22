@@ -10,7 +10,11 @@ const app = express();
 const PORT = process.env.PORT || 911;
 
 // ── Middleware ────────────────────────────────────────────────────────────────
-app.use(cors({ origin: process.env.CLIENT_URL || "http://localhost:5173" }));
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "https://raksha-kosh001.vercel.app",
+  }),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
