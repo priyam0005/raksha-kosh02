@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_BASE = "http://localhost:911";
+const API_BASE = "https://raksha-kosh02.onrender.com";
 
 export const uploadFileThunk = createAsyncThunk(
   "scan/uploadFile",

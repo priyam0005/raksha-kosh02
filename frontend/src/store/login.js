@@ -5,10 +5,13 @@ export const loginUser = createAsyncThunk(
   "register/login",
   async ({ email, password }, thunkAPI) => {
     try {
-      const response = await axios.post("http://localhost:911/upload/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://raksha-kosh02.onrender.com/login",
+        {
+          email,
+          password,
+        },
+      );
 
       if (response && response.data && response.data.token) {
         const { token, user } = response.data;

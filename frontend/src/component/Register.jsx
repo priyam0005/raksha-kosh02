@@ -21,7 +21,7 @@ export default function AuthForms() {
 
   const onSubmit = async (data) => {
     try {
-      await axios.post("http://localhost:911/upload/register", {
+      await axios.post("https://raksha-kosh02.onrender.com/upload/register", {
         email: data.email,
         username: data.username,
         password: data.password,
