@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7eb8ff" />
+      <stop offset="100%" stop-color="#3a72e8" />
+    </linearGradient>
+
+    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5aa0ff" />
+      <stop offset="100%" stop-color="#1e50cc" />
+    </linearGradient>
+
+    <!-- Strong outer glow -->
+    <filter id="glow1" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="blur1" />
+      <feGaussianBlur stdDeviation="12" result="blur2" />
+      <feMerge>
+        <feMergeNode in="blur2" />
+        <feMergeNode in="blur1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+    <!-- Inner glow -->
+    <filter id="glow2" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="4" result="blur1" />
+      <feGaussianBlur stdDeviation="8" result="blur2" />
+      <feMerge>
+        <feMergeNode in="blur2" />
+        <feMergeNode in="blur1" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Outer shield glow layer (blurred duplicate for bloom) -->
+  <path
+    d="M150 38 L220 65 L220 132 Q220 182 150 218 Q80 182 80 132 L80 65 Z"
+    fill="none"
+    stroke="#3a72e8"
+    stroke-width="10"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+    opacity="0.35"
+    filter="url(#glow1)"
+  />
+
+  <!-- Outer shield -->
+  <path
+    d="M150 38 L220 65 L220 132 Q220 182 150 218 Q80 182 80 132 L80 65 Z"
+    fill="none"
+    stroke="url(#g1)"
+    stroke-width="6"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+    filter="url(#glow1)"
+  />
+
+  <!-- Inner shield glow layer -->
+  <path
+    d="M150 72 L194 91 L194 134 Q194 169 150 194 Q106 169 106 134 L106 91 Z"
+    fill="none"
+    stroke="#2a5bbf"
+    stroke-width="8"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+    opacity="0.3"
+    filter="url(#glow2)"
+  />
+
+  <!-- Inner shield -->
+  <path
+    d="M150 72 L194 91 L194 134 Q194 169 150 194 Q106 169 106 134 L106 91 Z"
+    fill="none"
+    stroke="url(#g2)"
+    stroke-width="5.5"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+    filter="url(#glow2)"
+  />
+</svg>

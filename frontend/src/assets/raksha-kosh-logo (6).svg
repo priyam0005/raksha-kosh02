@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+  <defs>
+    <linearGradient id="outerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#89c4ff" />
+      <stop offset="100%" stop-color="#2f6de0" />
+    </linearGradient>
+    <linearGradient id="innerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60a8ff" />
+      <stop offset="100%" stop-color="#1a4fc4" />
+    </linearGradient>
+    <linearGradient id="fillGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a3a6e" stop-opacity="0.6" />
+      <stop offset="100%" stop-color="#0d2050" stop-opacity="0.4" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer shield filled -->
+  <path
+    d="M150 35 L225 64 L225 135 Q225 188 150 222 Q75 188 75 135 L75 64 Z"
+    fill="url(#fillGrad)"
+    stroke="url(#outerGrad)"
+    stroke-width="7"
+    stroke-linejoin="round"
+  />
+
+  <!-- Inner shield filled -->
+  <path
+    d="M150 70 L198 92 L198 137 Q198 174 150 198 Q102 174 102 137 L102 92 Z"
+    fill="none"
+    stroke="url(#innerGrad)"
+    stroke-width="6"
+    stroke-linejoin="round"
+  />
+</svg>
