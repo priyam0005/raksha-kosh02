@@ -8,7 +8,7 @@ const { promisify } = require("util");
 const execFileAsync = promisify(execFile);
 
 // Lazy-require optional deps — startup won't crash if not yet installed
-let axios, FormData, NodeClam;
+let axios, FormData;
 try {
   axios = require("axios");
 } catch {
@@ -19,21 +19,12 @@ try {
 } catch {
   FormData = null;
 }
-try {
-  NodeClam = require("clamscan");
-} catch {
-  NodeClam = null;
-}
 
 const VT_API_KEY = process.env.VIRUSTOTAL_API_KEY || "";
 const VT_THRESHOLD = parseInt(process.env.VT_THRESHOLD || "3", 10);
 const VT_TIMEOUT_MS = parseInt(process.env.VT_TIMEOUT_MS || "60000", 10);
 const VT_POLL_MS = 5000; // poll interval for VT analysis result
 const VT_MAX_RETRY = 3; // max transient retries per poll tick (BUG FIX #5)
-
-const CLAM_SOCKET = process.env.CLAM_SOCKET || "/var/run/clamav/clamd.ctl";
-const CLAM_HOST = process.env.CLAM_HOST || "127.0.0.1";
-const CLAM_PORT = parseInt(process.env.CLAM_PORT || "3310", 10);
 
 const HASH_DB_PATH = process.env.HASH_DB_PATH || "";
 
@@ -132,49 +123,12 @@ async function runHashCheck(filePath) {
 }
 
 /**
- * Scan file with ClamAV.
- *
- * Strategy:
- *   1. Try NodeClam (connects to clamd daemon via socket/TCP — fastest)
- *   2. Fall back to `clamscan` CLI (slower, no daemon required)
+ * Scan file with the ClamAV CLI (`clamscan`).
  *
  * @param {string} filePath
  * @returns {Promise<{ clean: boolean|null, virusName?: string, engine: string, reason?: string }>}
  */
 async function runClamAV(filePath) {
-  if (NodeClam) {
-    try {
-      const useSocket = fs.existsSync(CLAM_SOCKET);
-
-      const clamConfig = {
-        removeInfected: false,
-        debugMode: false,
-        scanRecursively: false,
-        clamdscan: useSocket
-          ? { socket: CLAM_SOCKET, timeout: 30000, active: true }
-          : { host: CLAM_HOST, port: CLAM_PORT, timeout: 30000, active: true },
-        preference: "clamdscan",
-      };
-
-      const clamscan = await new NodeClam().init(clamConfig);
-      const { isInfected, viruses } = await clamscan.scanFile(filePath);
-
-      return isInfected
-        ? {
-            clean: false,
-            virusName: viruses[0] || "unknown",
-            engine: "clamav-daemon",
-            reason: `ClamAV detected: ${viruses[0] || "malware"}`,
-          }
-        : { clean: true, engine: "clamav-daemon" };
-    } catch (err) {
-      console.warn(
-        "[Layer 3] NodeClam daemon error, falling back to CLI:",
-        err.message,
-      );
-    }
-  }
-
   try {
     await execFileAsync("clamscan", ["--no-summary", "--stdout", filePath], {
       timeout: 60_000,
